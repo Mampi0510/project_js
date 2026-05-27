@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="icon" type="image/png" href="./assets/images/favicon-32x32.png">
+    <script src="./js/app.js" defer></script>
+    <title>Typing Speed Test</title>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">
+                <img src="./assets/images/logo-small.svg" alt="logo" width="36" height="36">
+            </div>
+            <div class="logo-text">
+                <span class="logo-title">Typing Speed Test</span>
+                <span class="logo-sub">Type as fast as you can in 60 seconds</span>
+            </div>
+        </div>
+        <div class="personal-best" id="personalBestDisplay">
+            <span class="pb-trophy">🏆</span>
+            <span class="pb-text">Personal best: <strong id="pbValue">--</strong>
+                <span id="pbUnit"></span>
+            </span>
+        </div>
+    </header>
+
+    <main class="main" id="testScreen">
+        <div class="stats-bar" role="status">
+            <div class="stats-left">
+                <div class="stat">
+                    <span class="stat-label">WPM:</span>
+                    <span class="stat-value stat-wpm" id="wpmDisplay">0</span>
+                </div>
+                <div class="stat-divider">|</div>
+                <div class="stat">
+                    <span class="stat-label">Accuracy:</span>
+                    <span class="stat-value stat-accuracy" id="accuracyDisplay">100%</span>
+                </div>
+                <div class="stat-divider">|</div>
+                <div class="stat">
+                    <span class="stat-label">Time:</span>
+                    <span class="stat-value stat-time" id="timeDisplay">0:60</span>
+                </div>
+            </div>
+            <div class="controls-right">
+                <!-- button pill -->
+                <div class="controls-desktop">
+                    <div class="control-group">
+                        <span class="control-label">Difficulty:</span>
+                        <div class="btn-group" role="group">
+                            <button class="btn-pill" data-difficulty="easy">Easy</button>
+                            <button class="btn-pill" data-difficulty="medium">Medium</button>
+                            <button class="btn-pill active" data-difficulty="hard">Hard</button>
+                        </div> 
+                    </div>
+                    <div class="control-group">
+                        <span class="control-label">Mode:</span>
+                        <div class="btn-group" role="group">
+                            <button class="btn-pill active" data-mode="timed">Timed (60s)</button>
+                            <button class="btn-pill" data-mode="passage">Passage</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="passage-wrapper">
+            <div class="passage" id="passage" role="textbox"></div>
+            <div class="passage-overlay" id="passageOverlay">
+                <button class="btn-start" id="startBtn">Start Typing Test</button>
+                <p class="overlay-hint">Or click the text and start typing</p>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="bottom-actions" id="restartArea" style="display: none;">
+            <button class="btn-restart" id="restartBtn">
+                Restart Test
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8a6 6 0 1 0 1.2-3.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M2 4.4V8h3.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>        
+            </button>
+        </div>
+
+        <input type="text" id="hiddenInput" class="hidden-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    </main>
+    <!-- résultats -->
+    <div class="results-screen" id="resultsScreen" style="display: none;" role="dialog">
+        <span class="deco-star deco-star--red">✳</span>
+        <span class="deco-star deco-star--yellow">✦</span>
+        <div class="results-icon" id="resultsIcon"></div>
+        <h1 class="results-title" id="resultsTitle">Test Complete!!!</h1>
+        <p class="results-subtitle" id="resultsSubtitle">Solid run. Keep pushing to beat your highest record.</p>
+        <div class="results-stats">
+            <div class="results-stat-card">
+                <span class="results-stat-label">WPM:</span>
+                <span class="results-stat-value" id="resultsWpm">--</span>
+            </div>
+            <div class="results-stat-card">
+                <span class="results-stat-label">Accuracy:</span>
+                <span class="results-stat-value stat-accuracy" id="resultsAccuracy">--%</span>
+            </div>
+            <div class="results-stat-card">
+                <span class="results-stat-label">Characters</span>
+                <span class="results-stat-value" id="resultsChars">--/--</span>
+            </div>
+        </div>
+        <button class="btn-go-again" id="goAgainBtn">
+            <span id="goAgainLabel">Go Again</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8a6 6 0 1 0 1.2-3.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M2 4.4V8h3.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>        
+        </button>
+        <canvas id="confettiCanvas"></canvas>
+    </div>
+
+    <footer class="attribution">
+        Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank" rel="noopener" style="text-decoration: none;">Frontend Mentor</a>
+        Coded by <a href="https://github.com/Mampi0510" target="_blank" style="text-decoration: none;">Mampi</a>
+    </footer>
+</body>
+</html>
