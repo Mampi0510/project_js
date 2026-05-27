@@ -1,6 +1,6 @@
 let passages = {};
 let currentPassage = '';
-let currentDifficulty = 'hard';
+let currentDifficulty = 'easy';
 let currentMode = 'timed'; //timed ou passage
 
 let testState = 'idle'; // idle ou running ou done
@@ -297,7 +297,7 @@ function showResults(wpm, accuracy, correct, errs) {
         resultsIcon.className = 'results-icon icon-check';
         resultsIcon.innerHTML = '✅';
         resultsTitle.textContent = 'Baseline Established!';
-        resultSubtitle.textContent = 'You\'ve set the bar. Now the real challenge begins-time to beat it nigga.';
+        resultSubtitle.textContent = 'You\'ve set the bar. Now the real challenge begins-time to beat it.';
         goAgainLabel.textContent = 'Beat This Score\?';
     } else if (isNewBest) {
         //new personal best
@@ -309,7 +309,7 @@ function showResults(wpm, accuracy, correct, errs) {
         resultsIcon.className = 'results-icon';
         resultsIcon.innerHTML = '🎉'
         resultsTitle.textContent = 'High Score Smashed';
-        resultSubtitle.textContent = 'you\'re getting faster. That was lit🔥!!'
+        resultsSubtitle.textContent = 'you\'re getting faster. That was lit🔥!!'
         goAgainLabel.textContent = 'Bet you can\'t beat this Score';
 
         launchConfetti();
@@ -317,7 +317,7 @@ function showResults(wpm, accuracy, correct, errs) {
         resultsIcon.className = 'results-icon icon-check';
         resultsIcon.innerHTML = '✅';
         resultsTitle.textContent = 'Test Complete!';
-        resultSubtitle.textContent = 'Solid run but not enough, just saying...';
+        resultsSubtitle.textContent = 'Solid run but not enough, just saying...';
         goAgainLabel.textContent = 'Go Again';
     }
 }
