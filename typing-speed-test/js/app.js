@@ -82,6 +82,11 @@ function loadPersonalBest() {
     }
 }
 
+function getDuration() {
+    const durations = {easy: 60, medium: 90, hard: 120};
+    return durations[currentDifficulty] || 60;
+}
+
 //new test
 function setupNewTest() {
     passageEl.classList.add('blurred');
@@ -90,7 +95,7 @@ function setupNewTest() {
     charIndex = 0;
     errors = 0;
     totalTyped = 0;
-    timeLeft = 60;
+    timeLeft = getDuration();
     timeElapsed = 0;
 
     //random passage
@@ -104,7 +109,9 @@ function setupNewTest() {
     wpmDisplay.textContent = '0';
     accuracyDisplay.textContent = '100%';
     if (currentMode === 'timed'){
-        timeDisplay.textContent = '0:60';
+        const secs = getDuration();
+        const mins = Math.floor(secs / 60);
+        timeDisplay.textContent = `${mins}:${(secs % 60).toString().padStart(2, '0')}`;
     } else {
         timeDisplay.textContent = '0:00';
     }
@@ -122,17 +129,32 @@ function setupNewTest() {
 
 function renderPassage (){
     passageEl.innerHTML = '';
-    for (let i = 0; i <currentPassage.length; i++) {
-        const span = document.createElement('span');
-        span.classList.add('char');
-        if (currentPassage[i] === ' ' ){
+    let i = 0;
+    while (i < currentPassage.length) {
+        if (currentPassage[i] === ' '){
+            //only space
+            const span = document.createElement('span');
+            span.classList.add('char');
             span.textContent = '\u00A0';
+            span.dataset.char = ' ';
+            if (i === 0) span.classList.add('cursor');
+            passageEl.appendChild(span);
+            i++;
         } else {
-            span.textContent = currentPassage[i];
+            //all in one
+            const wordEl = document.createElement('span');
+            wordEl.classList.add('word');
+            while (i < currentPassage.length && currentPassage[i] !== ' '){
+                const span = document.createElement('span');
+                span.classList.add('char');
+                span.textContent = currentPassage[i];
+                span.dataset.char = currentPassage[i];
+                if (i === 0) span.classList.add('cursor');
+                wordEl.appendChild(span);
+                i++;
+            }
+            passageEl.appendChild(wordEl);
         }
-        span.dataset.char = currentPassage[i];
-        if (i === 0) span.classList.add('cursor');
-                     passageEl.appendChild(span);
     }
 }
 
@@ -223,7 +245,7 @@ function handleKeyInput(e) {
 function updateLiveStats() {
     let elapsed ;
     if ( currentMode === 'timed') {
-        elapsed = 60 - timeLeft
+        elapsed = getDuration() - timeLeft
     } else {
         elapsed = timeElapsed;
     }
@@ -257,7 +279,7 @@ function endTest() {
 
     let elapsed;
     if (currentMode === 'timed') {
-        elapsed = 60 - timeLeft;
+        elapsed = getDuration() - timeLeft;
     } else {
         elapsed = timeElapsed;
     }

@@ -224,12 +224,15 @@ button {
     color: var(--neutral-500);
     cursor: pointer;
     user-select: none;
-    outline: none;
-    word-break: break-word;
-    overflow-wrap: break-word;
+}
+
+.passage .word {
+    display: inline-block;
+    white-space: nowrap;
 }
 .passage .char {
     position: relative;
+    display: inline;
 } 
 .passage .char.correct{
     color: var(--green-500);
