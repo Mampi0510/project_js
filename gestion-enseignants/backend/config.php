@@ -4,18 +4,14 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
-$host = 'localhost';
-$dbname = 'gestion-enseignants';
-$username = 'root';
-$password = '';
+$conn = new mysqli("localhost", "root", "", "gestion-enseignants");
 
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die(json_encode ([
+if ($conn->connect_error) {
+    die(json_encode([
         "success" => false,
-        "message" => "Erreur connexion: " . $e->getMessage()
+        "message" => "Erreur connexion: " . $conn->connect_error
     ]));
 }
+
+$conn->set_charset("utf8");
 ?>
