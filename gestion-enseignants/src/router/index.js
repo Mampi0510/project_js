@@ -3,6 +3,7 @@ import BilanView from '@/views/BilanView.vue'
 import ListeView from '@/views/ListeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import { API_URL } from '@/config.js'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,18 +34,23 @@ const router = createRouter({
   ],
 })
 
-router.beforeEach((to) => {
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
+router.beforeEach(async (to) => {
+  const requiresAuth = to.meta.requiresAuth
 
-  if (to.meta.requiresAuth && !isLoggedIn) {
-    return { name: 'login' }
+  try {
+    const response = await fetch(`${API_URL}/auth.php?check=1`, { credentials: 'include' })
+    const data = await response.json()
+    const isLoggedIn = data.connecte
+
+    if (requiresAuth && !isLoggedIn) {
+      return { name: 'login' }
+    }
+    if (!requiresAuth && isLoggedIn) {
+      return { name: 'ajout' }
+    }
+  } catch {
+    if (requiresAuth) return { name: 'login' }
   }
-  if (!to.meta.requiresAuth && isLoggedIn) {
-    return { name: 'ajout' }
-  }
-  // to   = route destination
-  // from = route d'où on vient
-  // retourner false ou une route = bloquer/rediriger
 })
 
 export default router
