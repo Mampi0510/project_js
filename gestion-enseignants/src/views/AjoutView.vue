@@ -75,7 +75,7 @@
       <form @submit.prevent="ajouterEnseignant">
         <div class="form-group">
           <label for="matricule">Matricule</label>
-          <input id="matricule" v-model="matricule" placeholder="ENS001" maxlength="10">
+          <input id="matricule" v-model="matricule" placeholder="TC1" maxlength="10">
           <span v-if="erreurMatricule" class="erreur-champ">{{ erreurMatricule }}</span>
         </div>
         <div class="form-group">
@@ -89,11 +89,11 @@
         </div>
         <div class="form-group">
           <label for="nombre_heures">Nombre d'heures</label>
-          <input id="nombre_heures" v-model="nombre_heures" type="number" step="0.01" placeholder="12">
+          <input id="nombre_heures" v-model="nombre_heures" type="number" placeholder="12">
         </div>
         <div class="form-group">
           <label for="taux_horaire">Taux horaire</label>
-          <input id="taux_horaire" v-model="taux_horaire" type="number" step="0.01" placeholder="5000">
+          <input id="taux_horaire" v-model="taux_horaire" type="number" placeholder="5000">
         </div>
         <button type="submit" :disabled="chargement">
           {{ chargement ? 'Ajout en cours...' : 'Ajouter' }}
@@ -124,7 +124,7 @@
   background: white;
   padding: 1.8rem 2.5rem;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.27);
   width: 100%;
   max-width: 420px;
 }

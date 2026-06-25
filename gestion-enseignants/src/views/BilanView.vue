@@ -153,7 +153,7 @@ h2 {
   background: white;
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.27);
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -189,6 +189,6 @@ h2 {
   background: white;
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.27);
 }
 </style>

@@ -157,7 +157,7 @@
       </thead>
       <tbody>
         <tr v-for="enseignant in enseignantsAffiches" :key="enseignant.id">
-          <td>{{ enseignant.matricule }}</td>
+          <td>{{ enseignant.matricule.toUpperCase() }}</td>
           <td>{{ enseignant.nom.toUpperCase() }}</td>
           <td>{{ enseignant.prenom.charAt(0).toUpperCase() + enseignant.prenom.slice(1).toLowerCase() }}</td>
           <td>{{ enseignant.nombre_heures }}</td>
