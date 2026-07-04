@@ -31,7 +31,7 @@ class Commande {
     // Liste des commandes entre deux dates (bornes incluses)
     public function getByPeriode($dateDebut, $dateFin) {
         $stmt = $this->pdo->prepare(
-            "SELECT * FROM commande WHERE datecom BETWEEN :debut AND :fin ORDER BY datecom"
+            "SELECT * FROM commande WHERE datecom BETWEEN :debut AND :fin ORDER BY datecom DESC"
         );
         $stmt->execute(['debut' => $dateDebut, 'fin' => $dateFin]);
         return $stmt->fetchAll();

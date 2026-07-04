@@ -1,7 +1,8 @@
 <?php
+// models/Statistique.php
 // Model dédié aux requêtes de reporting/agrégation qui touchent plusieurs tables
 // (commande, ligne_commande, menu). Ne correspond à aucune table unique,
-// mais regroupe la logique métier "statistiques" en un seul endroit
+// mais regroupe la logique métier "statistiques" en un seul endroit.
 
 class Statistique {
     private $pdo;
@@ -10,8 +11,8 @@ class Statistique {
         $this->pdo = $pdo;
     }
 
-    // Recette totale accumulée : somme des montants de toutes les commandes payées
-    // Le montant d'une commande = somme(quantite * pu) sur toutes ses lignes
+    // Recette totale accumulée : somme des montants de toutes les commandes PAYEES.
+    // Le montant d'une commande = somme(quantite * pu) sur toutes ses lignes.
     public function getRecetteTotale() {
         $stmt = $this->pdo->query(
             "SELECT COALESCE(SUM(lc.quantite * m.pu), 0) AS recetteTotale
@@ -24,34 +25,40 @@ class Statistique {
         return (float) $resultat['recetteTotale'];
     }
 
-    // Recette des 6 derniers mois (y compris le mois en cours), groupée par mois,
+    // Recette des 6 derniers mois calendaires (mois en cours inclus), groupée par mois,
     // uniquement sur les commandes payées. Utilisé pour l'histogramme.
+    // On travaille sur des mois entiers (pas une période glissante de 180 jours)
+    // pour éviter qu'un mois partiel génère une barre supplémentaire.
     public function getRecette6DerniersMois() {
+        // Premier jour du mois le plus ancien à inclure :
+        // DATE_SUB(début du mois en cours, 5 mois) = 6 mois au total (5 précédents + en cours)
         $stmt = $this->pdo->query(
             "SELECT DATE_FORMAT(c.datecom, '%Y-%m') AS mois,
-                    COALESCE(SUM(lc.quantite * m.pu), 0) AS recette
+                COALESCE(SUM(lc.quantite * m.pu), 0) AS recette
              FROM commande c
              INNER JOIN ligne_commande lc ON c.idcom = lc.idcom
              INNER JOIN menu m ON lc.idplat = m.idplat
              WHERE c.paye = 1
-               AND c.datecom >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+               AND c.datecom >= DATE_SUB(DATE_FORMAT(CURDATE(), '%Y-%m-01'), INTERVAL 5 MONTH)
              GROUP BY DATE_FORMAT(c.datecom, '%Y-%m')
              ORDER BY mois ASC"
         );
         $resultats = $stmt->fetchAll();
 
-        // On complète les mois sans aucune commande payée avec une recette de 0,
-        // pour que l'histogramme affiche bien 6 barres même si certains mois sont vides
+        // Construction des 6 mois calendaires exacts (mois en cours + 5 précédents),
+        // avec recette = 0 pour les mois sans commande payée.
+        // On utilise 'first day of' pour rester sur des mois entiers sans décalage.
         $moisComplets = [];
         for ($i = 5; $i >= 0; $i--) {
-            $cle = date('Y-m', strtotime("-$i months"));
+            $cle = date('Y-m', strtotime("first day of -$i months"));
             $moisComplets[$cle] = 0;
         }
         foreach ($resultats as $ligne) {
-            $moisComplets[$ligne['mois']] = (float) $ligne['recette'];
+            if (isset($moisComplets[$ligne['mois']])) {
+                $moisComplets[$ligne['mois']] = (float) $ligne['recette'];
+            }
         }
 
-        // On transforme en tableau de paires [mois => recette], prêt pour un graphique
         $sortie = [];
         foreach ($moisComplets as $mois => $recette) {
             $sortie[] = ['mois' => $mois, 'recette' => $recette];

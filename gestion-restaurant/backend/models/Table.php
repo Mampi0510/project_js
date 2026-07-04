@@ -9,7 +9,7 @@ class Table {
     }
 
     public function getAll() {
-        $stmt = $this->pdo->query("SELECT * FROM table_ ORDER BY idtable");
+        $stmt = $this->pdo->query("SELECT * FROM table_ ORDER BY idtable DESC");
         return $stmt->fetchAll();
     }
 

@@ -7,7 +7,7 @@ function getConnexion() {
     $host = '127.0.0.1';
     $dbname = 'gestion_restaurant';
     $user = 'root';
-    $password = ''; // par défaut vide sous XAMPP -- adapte si tu as mis un mot de passe root
+    $password = ''; // vide sous XAMPP
 
     $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8mb4";
 
@@ -22,7 +22,7 @@ function getConnexion() {
         return $pdo;
     } catch (PDOException $e) {
         http_response_code(500);
-        header('Content-Type: application/json');
+        header('Content-Type: application/json'); //indiquer au navigateur que la réponse est du JSON
         echo json_encode(['erreur' => 'Connexion à la base de données impossible']);
         exit;
     }

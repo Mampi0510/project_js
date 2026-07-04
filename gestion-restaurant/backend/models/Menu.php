@@ -11,7 +11,7 @@ class Menu {
 
     // Retourne tous les plats, triés par idplat
     public function getAll() {
-        $stmt = $this->pdo->query("SELECT * FROM menu ORDER BY idplat");
+        $stmt = $this->pdo->query("SELECT * FROM menu ORDER BY idplat DESC");
         return $stmt->fetchAll();
     }
 
@@ -25,7 +25,7 @@ class Menu {
 
     // Recherche par nom de plat avec LIKE %...%
     public function search($terme) {
-        $stmt = $this->pdo->prepare("SELECT * FROM menu WHERE nomplat LIKE :terme ORDER BY nomplat");
+        $stmt = $this->pdo->prepare("SELECT * FROM menu WHERE nomplat LIKE :terme ORDER BY idplat DESC");
         $stmt->execute(['terme' => '%' . $terme . '%']);
         return $stmt->fetchAll();
     }
