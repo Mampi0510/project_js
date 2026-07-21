@@ -1,0 +1,10 @@
+#DATABASE BACKUPS
+*.sql
+*.bak
+*.sql.bak
+backup/
+backups/
+*.dump
+
+# Éviter les commits accidentels
+!schema.sql
